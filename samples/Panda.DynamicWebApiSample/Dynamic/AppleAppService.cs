@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Panda.DynamicWebApi;
 using Panda.DynamicWebApi.Attributes;
 using Panda.DynamicWebApiSample.Dtos;
@@ -11,14 +13,24 @@ namespace Panda.DynamicWebApiSample.Dynamic
 {
     [DynamicWebApi]
     // [Authorize]
-    public class AppleAppService: IDynamicWebApi
+    public class AppleAppService: IApplicationService
     {
         private static readonly Dictionary<int, string> Apples = new Dictionary<int, string>()
         {
             [1] = "Big Apple",
             [2] = "Small Apple"
         };
+        public IConfiguration configuration;
 
+        public SayHello _say;
+        public AppleAppService(IConfiguration configuration, SayHello say)
+        {
+            this.configuration = configuration;
+           // Console.WriteLine(configuration.GetSection("apollo")[""]);
+            Console.WriteLine(configuration.GetSection("test").Value);
+            this._say = say;
+
+        }
         [AllowAnonymous]
         public async Task UpdateAppleAsync(UpdateAppleDto dto)
         {
@@ -55,6 +67,7 @@ namespace Panda.DynamicWebApiSample.Dynamic
         /// <returns></returns>
         public IEnumerable<string> GetAllAsync()
         {
+            _say.Hello();
             return Apples.Values;
         }
 

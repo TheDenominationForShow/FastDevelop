@@ -1,7 +1,9 @@
 ﻿
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Panda.DynamicWebApi;
+using Panda.DynamicWebApiSample.Dtos;
 
 namespace Panda.DynamicWebApiSample
 {
@@ -22,6 +25,7 @@ namespace Panda.DynamicWebApiSample
         }
 
         public IConfiguration Configuration { get; }
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,8 +54,11 @@ namespace Panda.DynamicWebApiSample
                     options.RequireHttpsMetadata = false;
                     options.Audience = "Panda-Api";
                 });
-            services.AddDynamicWebApi();
-
+            services.AddDynamicWebApi(Configuration);
+            services.AddAutofac();
+            services.AddOptions();
+            // services.AddAutowired();
+            //     services.AddSingleton<SayHello>();
 
             // 自定义配置
             //services.AddDynamicWebApi((options) =>
@@ -89,6 +96,11 @@ namespace Panda.DynamicWebApiSample
             //});
 
 
+        }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac, like:
+            builder.RegisterType<SayHello>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

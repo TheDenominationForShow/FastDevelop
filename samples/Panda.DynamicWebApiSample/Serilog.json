@@ -1,0 +1,124 @@
+{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft": "Error",
+        "System": "Error",
+        "SkyWalking": "Error",
+        "FD.Authentication.HeaderBearer": "Error"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "get/cascade": null,
+        "Args": { "restrictedToMinimumLevel": "Debug" }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "log\\fatal.txt",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Fatal"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "log\\error.txt",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Error"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "log\\warn.txt",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Warning"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "log\\info_.txt",
+          "rollingInterval": "Day",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Information"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "log\\debug_.txt",
+          "rollingInterval": "Day",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Debug"
+        }
+      }
+    ]
+  },
+  "SerilogSql": {
+    "MinimumLevel": "Debug",
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "logsql\\error.txt",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Error"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "logsql\\warn.txt",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Warning"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss}-[{Level:u3}] {Message}{NewLine}{Exception}",
+          "path": "logsql\\info_.txt",
+          "rollingInterval": "Day",
+          "rollOnFileSizeLimit": "True",
+          "shared": "True",
+          "fileSizeLimitBytes": "5242880",
+          "retainedFileCountLimit": "50",
+          "restrictedToMinimumLevel": "Debug"
+        }
+      }
+    ]
+  }
+}
