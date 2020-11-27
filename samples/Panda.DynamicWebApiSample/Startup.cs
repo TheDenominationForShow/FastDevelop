@@ -30,7 +30,7 @@ namespace Panda.DynamicWebApiSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson().AddControllersAsServices();
 
             // 注册Swagger生成器，定义一个和多个Swagger 文档
             services.AddSwaggerGen(options =>
@@ -100,7 +100,7 @@ namespace Panda.DynamicWebApiSample
         public void ConfigureContainer(ContainerBuilder builder)
         {
             // Register your own things directly with Autofac, like:
-            builder.RegisterType<SayHello>();
+            builder.AddAutowired();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

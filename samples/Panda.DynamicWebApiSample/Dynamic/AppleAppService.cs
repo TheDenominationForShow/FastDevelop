@@ -12,6 +12,7 @@ using Panda.DynamicWebApiSample.Dtos;
 namespace Panda.DynamicWebApiSample.Dynamic
 {
     [DynamicWebApi]
+    [Autowired]
     // [Authorize]
     public class AppleAppService: IApplicationService
     {
@@ -21,14 +22,13 @@ namespace Panda.DynamicWebApiSample.Dynamic
             [2] = "Small Apple"
         };
         public IConfiguration configuration;
-
-        public SayHello _say;
-        public AppleAppService(IConfiguration configuration, SayHello say)
+        [Autowired]
+        public SayHello _say { set; get; }
+        public AppleAppService(IConfiguration configuration)
         {
             this.configuration = configuration;
            // Console.WriteLine(configuration.GetSection("apollo")[""]);
             Console.WriteLine(configuration.GetSection("test").Value);
-            this._say = say;
 
         }
         [AllowAnonymous]

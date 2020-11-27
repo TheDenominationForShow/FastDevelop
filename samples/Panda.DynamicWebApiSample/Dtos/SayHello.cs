@@ -1,4 +1,4 @@
-﻿using FD.Simple.Utils.Agent;
+﻿using Panda.DynamicWebApi.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Panda.DynamicWebApiSample.Dtos
 {
-     [Autowired]
+    [Autowired]
     public class SayHello
     {
         public string Hello()

@@ -39,7 +39,6 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="Com.Ctrip.Framework.Apollo.Configuration" Version="2.4.1" />
-    <PackageReference Include="FD.Simple.Utils" Version="2.0.4" />
   </ItemGroup>
 
 </Project>

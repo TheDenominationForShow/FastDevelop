@@ -6,12 +6,12 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Com.Ctrip.Framework.Apollo;
-using FD.Simple.Utils.Agent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Panda.DynamicWebApi.Attributes;
 using Panda.DynamicWebApi.Helpers;
 
 namespace Panda.DynamicWebApi
@@ -110,14 +110,9 @@ namespace Panda.DynamicWebApi
             return AddDynamicWebApi(services,configuration,dynamicWebApiOptions);
         }
 
-        public static IServiceProvider AddAutowired(this IServiceCollection services)
+        public static void AddAutowired(this ContainerBuilder builder)
         {
-            //切换DI容器
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
             builder.RegisterBllModule();
-            var container = builder.Build();
-            return new AutofacServiceProvider(container);
         }
         /// <summary>
         /// 注册BaseFoo 和 Autowried 相关服务
@@ -126,8 +121,6 @@ namespace Panda.DynamicWebApi
         /// <param name="configuration"></param>
         public static void RegisterBllModule(this ContainerBuilder containerBuilder)
         {
-            List<IRegisterModuleType> listRegisterModule = new List<IRegisterModuleType>();
-            var basePath = AppContext.BaseDirectory;
             Assembly moduleAssembly = null;
             foreach (var module in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -142,11 +135,12 @@ namespace Panda.DynamicWebApi
                 {
                     var interceptor = t.GetCustomAttribute<AutowiredAttribute>().InterceptorType;
                     var builder = containerBuilder.RegisterType(t);
-                    if (t.GetInterfaces().Count() > 0)
-                    {
-                        builder.AsImplementedInterfaces();
-                    }
                     builder.PropertiesAutowired(propertySelector).InstancePerLifetimeScope();
+                    //if (t.GetInterfaces().Count() > 0)
+                    //{
+                    //    builder.AsImplementedInterfaces();
+                    //}
+
                     //if (interceptor != null)
                     //{
                     //    builder.InterceptedBy(interceptor);
