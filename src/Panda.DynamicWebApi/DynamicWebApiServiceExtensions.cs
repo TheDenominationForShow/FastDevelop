@@ -6,11 +6,14 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Com.Ctrip.Framework.Apollo;
+using GW.ApiLoader.Utils.Swagger;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
 using Panda.DynamicWebApi.Attributes;
 using Panda.DynamicWebApi.Helpers;
 
@@ -63,7 +66,20 @@ namespace Panda.DynamicWebApi
             services.Replace(ServiceDescriptor.Singleton(typeof(IConfiguration), LoadConfig(configuration)));
             return services;
         }
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration, DynamicWebApiOptions options)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                //to do xml 
+                c.SwaggerDoc("v1", new OpenApiInfo { Title =  "接口", Version = "1" });
+                c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{Directory.GetCurrentDirectory()}.xml"), true);
+                c.DocumentFilter<SwaggerIgnoreFilter>();
+                c.UseInlineDefinitionsForEnums();
+            });
 
+            services.AddSwaggerGenNewtonsoftSupport();
+            return services;
+        }
         public static IConfiguration LoadConfig( IConfiguration configuration)
         {
             var tmpconfigurationBuilder = new ConfigurationBuilder();
@@ -109,7 +125,25 @@ namespace Panda.DynamicWebApi
 
             return AddDynamicWebApi(services,configuration,dynamicWebApiOptions);
         }
+        /// <summary>
+        /// 注入基础中间件（带Swagger）
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="routePrefix"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseSwagger(this IApplicationBuilder app)
+        {
+            app.UseSwagger(c =>
+            {
+                c.SerializeAsV2 = true;
+            });
 
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json",  "接口");
+            });
+            return app;
+        }
         public static void AddAutowired(this ContainerBuilder builder)
         {
             builder.RegisterBllModule();
